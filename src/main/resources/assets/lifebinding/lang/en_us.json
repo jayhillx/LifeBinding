@@ -1,0 +1,12 @@
+{
+  "itemGroup.lifebindingTab": "Life Binding",
+  "item.minecraft.potion.effect.life_binding": "Potion of Life Binding",
+  "item.minecraft.splash_potion.effect.life_binding": "Splash Potion of Life Binding",
+  "item.minecraft.lingering_potion.effect.life_binding": "Lingering Potion of Life Binding",
+  "item.minecraft.tipped_arrow.effect.life_binding": "Arrow of Life Binding",
+
+  "effect.lifebinding.life_binding": "Life Binding",
+  "effect.lifebinding.life_damaging": "Life Damaging",
+
+  "death.attack.lifeBinding": "%1$s was doomed to death reaping bound to %2$s"
+}
