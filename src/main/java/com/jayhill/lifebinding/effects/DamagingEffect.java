@@ -17,7 +17,7 @@ public class DamagingEffect extends Effect {
      */
     public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
         if (this == LifeBindingPotion.LIFE_DAMAGING_EFFECT.get()) {
-            entityLivingBaseIn.attackEntityFrom(ModDamageSource.LIFE_BINDING, 1.0F);
+            entityLivingBaseIn.attackEntityFrom(ModDamageSource.LIFE_BINDING, 1.5F);
         }
     }
 

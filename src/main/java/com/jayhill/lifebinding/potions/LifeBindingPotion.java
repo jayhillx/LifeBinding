@@ -17,14 +17,14 @@ public class LifeBindingPotion {
     public static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, LifeBinding.MOD_ID);
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTION_TYPES, LifeBinding.MOD_ID);
 
-    //Effects
+    // Effects
     public static final RegistryObject<Effect> LIFE_BINDING_EFFECT = EFFECTS.register("life_binding", BindingEffect::new);
     public static final RegistryObject<Effect> LIFE_DAMAGING_EFFECT = EFFECTS.register("life_damaging", DamagingEffect::new);
 
     /**
      * This is for the Life Binding potion Item.
      */
-    //Potion Items
+    // Potion Items
     public static final RegistryObject<Potion> LIFE_BINDING = POTIONS.register("life_binding", () -> new Potion(new EffectInstance(LIFE_BINDING_EFFECT.get(), 400)));
 
     /**
