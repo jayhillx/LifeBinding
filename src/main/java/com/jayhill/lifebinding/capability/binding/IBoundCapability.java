@@ -2,9 +2,9 @@ package com.jayhill.lifebinding.capability.binding;
 
 public interface IBoundCapability {
 
-    boolean isBound();
+    void setBoundPlayer(String[] var1);
 
-    void setBound(boolean bound);
+    String[] getBoundPlayer();
 
     void copyForRespawn(DefaultBoundCapability var1);
 

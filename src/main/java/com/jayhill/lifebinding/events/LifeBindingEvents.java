@@ -1,7 +1,6 @@
 package com.jayhill.lifebinding.events;
 
 import com.jayhill.lifebinding.capability.binding.BindingCapabilities;
-import com.jayhill.lifebinding.capability.CapabilityHelper;
 import com.jayhill.lifebinding.capability.binding.DefaultBoundCapability;
 import com.jayhill.lifebinding.capability.binding.IBoundCapability;
 import com.jayhill.lifebinding.init.ModDamageSource;
@@ -26,14 +25,14 @@ public class LifeBindingEvents {
 
             for (ServerPlayerEntity serverPlayerEntity : player.getServer().getPlayerList().getPlayers()) {
 
-                player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((bound) -> {
-                    if (CapabilityHelper.getPlayerBound(serverPlayerEntity)) {
+                if (event.getSource() == ModDamageSource.LIFE_BINDING) {
+                    serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
+                }
 
-                        if (event.getSource() == ModDamageSource.LIFE_BINDING) {
-                            serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
-                        } else {
-                            serverPlayerEntity.addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 70000, 1));
-                        }
+                serverPlayerEntity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((h) -> {
+                    if (event.getEntity().getName().equals(h.getBoundPlayer())) {
+
+                        serverPlayerEntity.addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 70000, 1));
                     }
                 });
             }

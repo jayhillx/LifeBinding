@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
+@SuppressWarnings("all")
 public class DamagingEffect extends Effect {
     public DamagingEffect() {
         super(EffectType.HARMFUL, 10690366);

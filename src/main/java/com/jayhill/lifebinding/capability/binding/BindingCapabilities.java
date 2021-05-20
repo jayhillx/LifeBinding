@@ -1,14 +1,14 @@
 package com.jayhill.lifebinding.capability.binding;
 
-import net.minecraft.nbt.ByteNBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class BindingCapabilities {
 
@@ -23,14 +23,15 @@ public class BindingCapabilities {
 
         @Nullable
         public INBT writeNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side) {
-            return ByteNBT.valueOf(instance.isBound());
+            CompoundNBT tag = new CompoundNBT();
+            tag.putString("boundTo", Arrays.toString(instance.getBoundPlayer()));
+            return tag;
         }
 
         public void readNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side, INBT nbt) {
-            if (nbt.getId() != Constants.NBT.TAG_BYTE) {
-                return;
-            }
-            instance.setBound(((ByteNBT)nbt).getByte() == 1);
+            String cause = ((CompoundNBT)nbt).getString("boundTo");
+            String[] stringArray = cause.split(", ");
+            instance.setBoundPlayer(stringArray);
         }
     }
 

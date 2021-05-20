@@ -2,18 +2,18 @@ package com.jayhill.lifebinding.capability.binding;
 
 public class DefaultBoundCapability implements IBoundCapability {
 
-    private boolean isBound = false;
+    private String[] boundPlayer = new String[]{"none"};
 
-    public boolean isBound() {
-        return this.isBound;
+    public void setBoundPlayer(String[] boundPlayer) {
+        this.boundPlayer = boundPlayer;
     }
 
-    public void setBound(boolean bound) {
-        this.isBound = bound;
+    public String[] getBoundPlayer() {
+        return this.boundPlayer;
     }
 
-    public void copyForRespawn(DefaultBoundCapability deadPlayer) {
-        this.isBound = deadPlayer.isBound;
+    public void copyForRespawn(DefaultBoundCapability oldStore) {
+        this.boundPlayer = oldStore.boundPlayer;
     }
 
 }
