@@ -12,7 +12,9 @@ public class AttachCapabilityEvent {
     @SubscribeEvent
     public void attachPlayerCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof PlayerEntity) {
-            event.addCapability(new ResourceLocation("lifebinding", "bound"), new BindingCapabilityProvider());
+            BindingCapabilityProvider provider = new BindingCapabilityProvider();
+            event.addCapability(new ResourceLocation("lifebinding", "bound"), provider);
+            event.addListener(provider::invalidate);
         }
     }
 

@@ -9,26 +9,26 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@SuppressWarnings("all")
 public class BindingCapabilityProvider implements ICapabilitySerializable<CompoundNBT> {
 
-    private final IBoundCapability INSTANCE = BindingCapabilities.LIFE_BOUND_CAPABILITY.getDefaultInstance();
-    private final LazyOptional<IBoundCapability> optional = LazyOptional.of(() -> INSTANCE);
+    private final DefaultBoundCapability bound = new DefaultBoundCapability();
+    final LazyOptional<IBoundCapability> boundOptional = LazyOptional.of(() -> this.bound);
+
+    public void invalidate() {
+        this.boundOptional.invalidate();
+    }
 
     @Nonnull
-    @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return cap == BindingCapabilities.LIFE_BOUND_CAPABILITY ? optional.cast() : LazyOptional.empty();
+        return BindingCapabilities.LIFE_BOUND_CAPABILITY.orEmpty(cap, this.boundOptional);
     }
 
     public CompoundNBT serializeNBT() {
-        return BindingCapabilities.LIFE_BOUND_CAPABILITY == null ? new CompoundNBT() : (CompoundNBT)BindingCapabilities.LIFE_BOUND_CAPABILITY.writeNBT(INSTANCE, null);
+        return (CompoundNBT)BindingCapabilities.LIFE_BOUND_CAPABILITY.writeNBT(this.bound, null);
     }
 
     public void deserializeNBT(CompoundNBT nbt) {
-        if (BindingCapabilities.LIFE_BOUND_CAPABILITY != null) {
-            BindingCapabilities.LIFE_BOUND_CAPABILITY.readNBT(INSTANCE, null, nbt);
-        }
+        BindingCapabilities.LIFE_BOUND_CAPABILITY.readNBT(this.bound, null, nbt);
     }
 
 }

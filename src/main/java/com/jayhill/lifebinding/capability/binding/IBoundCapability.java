@@ -1,10 +1,16 @@
 package com.jayhill.lifebinding.capability.binding;
 
+import java.util.UUID;
+
 public interface IBoundCapability {
 
-    void setBoundPlayer(String[] var1);
+    boolean isBound();
 
-    String[] getBoundPlayer();
+    void setBound(boolean bound);
+
+    void setUUID(UUID var1);
+
+    UUID getUUID();
 
     void copyForRespawn(DefaultBoundCapability var1);
 

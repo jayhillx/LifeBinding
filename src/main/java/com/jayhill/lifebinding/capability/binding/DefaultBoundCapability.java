@@ -1,19 +1,31 @@
 package com.jayhill.lifebinding.capability.binding;
 
+import java.util.UUID;
+
 public class DefaultBoundCapability implements IBoundCapability {
 
-    private String[] boundPlayer = new String[]{"none"};
+    private UUID uuid = null;
 
-    public void setBoundPlayer(String[] boundPlayer) {
-        this.boundPlayer = boundPlayer;
+    private boolean isBound = false;
+
+    public boolean isBound() {
+        return this.isBound;
     }
 
-    public String[] getBoundPlayer() {
-        return this.boundPlayer;
+    public void setBound(boolean bound) {
+        this.isBound = bound;
+    }
+
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public UUID getUUID() {
+        return uuid;
     }
 
     public void copyForRespawn(DefaultBoundCapability oldStore) {
-        this.boundPlayer = oldStore.boundPlayer;
+        this.uuid = oldStore.uuid;
     }
 
 }
