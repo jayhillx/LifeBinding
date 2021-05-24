@@ -12,6 +12,6 @@ public interface IBoundCapability {
 
     UUID getUUID();
 
-    void copyForRespawn(DefaultBoundCapability var1);
+    void copyForRespawn(IBoundCapability var1);
 
 }

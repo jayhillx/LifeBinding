@@ -24,8 +24,8 @@ public class DefaultBoundCapability implements IBoundCapability {
         return uuid;
     }
 
-    public void copyForRespawn(DefaultBoundCapability oldStore) {
-        this.uuid = oldStore.uuid;
+    public void copyForRespawn(IBoundCapability oldStore) {
+        this.uuid = oldStore.getUUID();
     }
 
 }

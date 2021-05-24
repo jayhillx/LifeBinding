@@ -7,8 +7,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
-import java.util.UUID;
-
 public class BindingCapabilities {
     @CapabilityInject(IBoundCapability.class)
     public static Capability<IBoundCapability> LIFE_BOUND_CAPABILITY = null;
@@ -21,13 +19,17 @@ public class BindingCapabilities {
 
         public INBT writeNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side) {
             CompoundNBT tag = new CompoundNBT();
-            tag.putUniqueId("boundTo", instance.getUUID());
+            if (instance.getUUID() != null) {
+                tag.putUniqueId("boundTo", instance.getUUID());
+            }
             return tag;
         }
 
         public void readNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side, INBT nbt) {
-            UUID boundTo = ((CompoundNBT)nbt).getUniqueId("boundTo");
-            instance.setUUID(boundTo);
+            CompoundNBT tag = (CompoundNBT) nbt;
+            if (tag.contains("boundTo")) {
+                instance.setUUID(tag.getUniqueId("boundTo"));
+            }
         }
     }
 
