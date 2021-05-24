@@ -1,7 +1,7 @@
 package com.jayhill.lifebinding.events;
 
+import com.jayhill.lifebinding.capability.CapabilityHelper;
 import com.jayhill.lifebinding.capability.binding.BindingCapabilities;
-import com.jayhill.lifebinding.capability.binding.DefaultBoundCapability;
 import com.jayhill.lifebinding.capability.binding.IBoundCapability;
 import com.jayhill.lifebinding.init.ModDamageSource;
 import com.jayhill.lifebinding.potions.LifeBindingPotion;
@@ -25,14 +25,18 @@ public class LifeBindingEvents {
 
             for (ServerPlayerEntity serverPlayerEntity : player.getServer().getPlayerList().getPlayers()) {
 
-                if (event.getSource() == ModDamageSource.LIFE_BINDING) {
-                    serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
-                }
-
                 serverPlayerEntity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((h) -> {
-                    if (event.getEntity().getName().equals(h.getBoundPlayer())) {
+                    if (CapabilityHelper.getPlayerBound(serverPlayerEntity)) {
 
-                        serverPlayerEntity.addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 70000, 1));
+                        if (event.getSource() == ModDamageSource.LIFE_BINDING) {
+                            serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
+
+                        } else {
+                            serverPlayerEntity.getServer().getPlayerList().getPlayerByUUID(h.getUUID()); {
+                                serverPlayerEntity.addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 70000, 1));
+
+                            }
+                        }
                     }
                 });
             }
@@ -43,9 +47,11 @@ public class LifeBindingEvents {
     public void onDeath(PlayerEvent.Clone event) {
         LazyOptional<IBoundCapability> capability = event.getOriginal().getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY);
 
-        capability.ifPresent((oldStore) -> event.getPlayer().getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((newStore) -> {
-            newStore.copyForRespawn((DefaultBoundCapability)oldStore);
-        }));
+        capability.ifPresent((oldStore) -> {
+            event.getPlayer().getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((newStore) -> {
+                newStore.copyForRespawn(oldStore);
+            });
+        });
     }
 
 }
