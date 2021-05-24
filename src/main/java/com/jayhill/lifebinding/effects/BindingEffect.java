@@ -1,13 +1,17 @@
 package com.jayhill.lifebinding.effects;
 
+import com.jayhill.lifebinding.capability.CapabilityHelper;
 import com.jayhill.lifebinding.capability.binding.BindingCapabilities;
 import com.jayhill.lifebinding.potions.LifeBindingPotion;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+
+import java.util.UUID;
 
 @SuppressWarnings("all")
 public class BindingEffect extends Effect {
@@ -39,27 +43,35 @@ public class BindingEffect extends Effect {
                                 player1.removePotionEffect(LifeBindingPotion.LIFE_BINDING_EFFECT.get());
                                 player2.removePotionEffect(LifeBindingPotion.LIFE_BINDING_EFFECT.get());
 
+                                CapabilityHelper.setPlayerBound((ServerPlayerEntity) player1, true);
+                                CapabilityHelper.setPlayerBound((ServerPlayerEntity) player2, true);
+
                                 player1.getEntityWorld().playSound(player1, (player1).getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
-                                String cause1 = null;
-                                String cause2 = null;
-                                if (player1.getScoreboardName().equals(player1.getGameProfile().getName())) {
-                                    cause1 = (player2).getGameProfile().getName();
-                                } if (player2.getScoreboardName().equals(player2.getGameProfile().getName())) {
-                                    cause2 = (player1).getGameProfile().getName();
+                                /** Gets both player's UUID. */
+                                UUID boundPlayer1 = null;
+                                if (player1.getScoreboardName().equals(player1.getGameProfile().getId())) {
+                                    boundPlayer1 = (player2).getGameProfile().getId();
+                                }
+                                UUID boundPlayer2 = null;
+                                if (player2.getScoreboardName().equals(player2.getGameProfile().getId())) {
+                                    boundPlayer2 = (player1).getGameProfile().getId();
                                 }
 
-                                String finalCause1 = cause1;
-                                player1.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((statsHandler) -> {
-                                    String[] causeArray = statsHandler.getBoundPlayer();
-                                    causeArray[temp] = finalCause1;
-                                    statsHandler.setBoundPlayer(causeArray);
+                                // Player 1
+                                UUID getBoundPlayer1 = boundPlayer1;
+                                player1.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((capability) -> {
+                                    UUID causeArray = UUID.fromString(capability.getUUID().toString());
+                                    causeArray = getBoundPlayer1;
+                                    capability.setUUID(causeArray);
                                 });
-                                String finalCause2 = cause2;
-                                player2.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((statsHandler) -> {
-                                    String[] causeArray = statsHandler.getBoundPlayer();
-                                    causeArray[temp] = finalCause2;
-                                    statsHandler.setBoundPlayer(causeArray);
+
+                                // Player 2
+                                UUID getBoundPlayer2 = boundPlayer2;
+                                player2.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((capability) -> {
+                                    UUID causeArray = UUID.fromString(capability.getUUID().toString());
+                                    causeArray = getBoundPlayer2;
+                                    capability.setUUID(causeArray);
                                 });
                             }
                         }
@@ -68,8 +80,6 @@ public class BindingEffect extends Effect {
             }
         }
     }
-
-    private int temp;
 
     @Override
     public boolean isReady(int duration, int amplifier) {
