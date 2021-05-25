@@ -51,6 +51,11 @@ public class BindingEffect extends Effect {
                                 CapabilityHelper.setPlayerBound((ServerPlayerEntity) player1, true);
                                 CapabilityHelper.setPlayerBound((ServerPlayerEntity) player2, true);
 
+                                if (!world.isRemote()) {
+                                    ((ServerWorld)player1.world).spawnParticle(ParticleTypes.EXPLOSION, player1.getPosX(), player1.getPosYHeight(1.0D), player1.getPosZ(), 8, 2.0D, 2.0D, 2.0D, 1.0D);
+                                    ((ServerWorld)player2.world).spawnParticle(ParticleTypes.EXPLOSION, player2.getPosX(), player2.getPosYHeight(1.0D), player2.getPosZ(), 8, 2.0D, 2.0D, 2.0D, 1.0D);
+                                }
+
                                 player1.getEntityWorld().playSound(player1, (player1).getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
                                 /** Get both player's UUID. */
