@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BindingCapabilityProvider implements ICapabilitySerializable<CompoundNBT> {
-
     private final DefaultBoundCapability bound = new DefaultBoundCapability();
     final LazyOptional<IBoundCapability> boundOptional = LazyOptional.of(() -> this.bound);
 
@@ -24,11 +23,13 @@ public class BindingCapabilityProvider implements ICapabilitySerializable<Compou
     }
 
     public CompoundNBT serializeNBT() {
-        return (CompoundNBT)BindingCapabilities.LIFE_BOUND_CAPABILITY.writeNBT(this.bound, null);
+        return BindingCapabilities.LIFE_BOUND_CAPABILITY == null ? new CompoundNBT() : (CompoundNBT)BindingCapabilities.LIFE_BOUND_CAPABILITY.writeNBT(this.bound, null);
     }
 
     public void deserializeNBT(CompoundNBT nbt) {
-        BindingCapabilities.LIFE_BOUND_CAPABILITY.readNBT(this.bound, null, nbt);
+        if (BindingCapabilities.LIFE_BOUND_CAPABILITY != null) {
+            BindingCapabilities.LIFE_BOUND_CAPABILITY.readNBT(this.bound, null, nbt);
+        }
     }
 
 }
