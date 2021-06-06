@@ -1,9 +1,9 @@
 package com.jayhill.lifebinding;
 
 import com.jayhill.lifebinding.capability.binding.BindingCapabilities;
-import com.jayhill.lifebinding.events.AttachCapabilityEvent;
-import com.jayhill.lifebinding.events.LifeBindingEvents;
+import com.jayhill.lifebinding.events.BindingEvents;
 import com.jayhill.lifebinding.potions.LifeBindingPotion;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class LifeBinding {
     public static final String MOD_ID = "lifebinding";
 
-
     public LifeBinding() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
@@ -25,9 +24,9 @@ public class LifeBinding {
         LifeBindingPotion.EFFECTS.register(modEventBus);
         LifeBindingPotion.POTIONS.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.register(new LifeBindingEvents());
-        MinecraftForge.EVENT_BUS.register(new AttachCapabilityEvent());
+        MinecraftForge.EVENT_BUS.register(new BindingEvents());
         MinecraftForge.EVENT_BUS.register(this);
+
     }
 
     private void setup(final FMLCommonSetupEvent event) {
