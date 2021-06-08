@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -26,7 +25,6 @@ public class BindingEvents {
         if (event.getObject() instanceof PlayerEntity) {
             BindingCapabilityProvider provider = new BindingCapabilityProvider();
             event.addCapability(new ResourceLocation("lifebinding", "bound"), provider);
-            event.addListener(provider::invalidate);
         }
     }
 
@@ -58,22 +56,6 @@ public class BindingEvents {
                 });
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onPotionExpire(PotionEvent.PotionExpiryEvent event) {
-        PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-
-        player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).ifPresent((h) -> {
-            if (CapabilityHelper.getPlayerBound(player)) {
-
-                if (event.getPotionEffect().getPotion() == LifeBindingPotion.LIFE_DAMAGING_EFFECT.get()) {
-
-                    int health = (int) player.getHealth() + 20;
-                    player.attackEntityFrom(ModDamageSource.LIFE_BINDING.causeBoundPlayer(player), health);
-                }
-            }
-        });
     }
 
     @SubscribeEvent
