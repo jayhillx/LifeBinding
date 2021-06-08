@@ -6,7 +6,7 @@ public class DefaultBoundCapability implements IBoundCapability {
 
     private UUID uuid = null;
 
-    private boolean isBound = false;
+    private boolean isBound;
 
     public boolean isBound() {
         return this.isBound;
@@ -25,6 +25,7 @@ public class DefaultBoundCapability implements IBoundCapability {
     }
 
     public void copyForRespawn(IBoundCapability oldStore) {
+        this.isBound = oldStore.isBound();
         this.uuid = oldStore.getUUID();
     }
 
