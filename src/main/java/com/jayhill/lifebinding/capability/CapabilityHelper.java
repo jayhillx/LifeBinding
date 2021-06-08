@@ -8,11 +8,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 public class CapabilityHelper {
 
     public static void setPlayerBound(ServerPlayerEntity player, boolean bound) {
-        player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(BindingCapabilities.LIFE_BOUND_CAPABILITY.getDefaultInstance()).setBound(bound);
+        player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null).setBound(bound);
     }
 
     public static boolean getPlayerBound(PlayerEntity player) {
-        return player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(BindingCapabilities.LIFE_BOUND_CAPABILITY.getDefaultInstance()).isBound();
+        return player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null).isBound();
     }
 
 }
