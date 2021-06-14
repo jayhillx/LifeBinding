@@ -18,13 +18,13 @@ public class BoundDamageSource extends DamageSource {
     }
 
     public ITextComponent getDeathMessage(LivingEntity playerEntityIn) {
-        PlayerEntity playerEntity = (PlayerEntity) playerEntityIn;
+        PlayerEntity playerEntity = (PlayerEntity)playerEntityIn;
         String s = "death.attack." + this.damageType;
         String s1 = s + ".boundPlayer";
 
-        IBoundCapability boundPlayer = playerEntity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
+        IBoundCapability bound = playerEntity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
 
-        return playerEntity != null ? new TranslationTextComponent(s1, playerEntityIn.getDisplayName(), playerEntity.getServer().getPlayerList().getPlayerByUUID(boundPlayer.getUUID()).getDisplayName()) : new TranslationTextComponent(s, playerEntityIn.getDisplayName());
+        return playerEntity != null ? new TranslationTextComponent(s1, playerEntityIn.getDisplayName(), bound.getName()) : new TranslationTextComponent(s, playerEntityIn.getDisplayName());
     }
 
 }
