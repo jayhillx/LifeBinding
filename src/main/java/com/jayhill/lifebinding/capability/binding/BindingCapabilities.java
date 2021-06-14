@@ -20,15 +20,22 @@ public class BindingCapabilities {
         public INBT writeNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side) {
             CompoundNBT tag = new CompoundNBT();
             if (instance.getUUID() != null) {
-                tag.putUniqueId("boundTo", instance.getUUID());
+                tag.putUniqueId("boundUUID", instance.getUUID());
+                tag.putString("boundName", instance.getName());
+                tag.putBoolean("isBound", instance.isBound());
             }
+
             return tag;
         }
 
         public void readNBT(Capability<IBoundCapability> capability, IBoundCapability instance, Direction side, INBT nbt) {
             CompoundNBT tag = (CompoundNBT) nbt;
-            if (tag.contains("boundTo")) {
-                instance.setUUID(tag.getUniqueId("boundTo"));
+            if (tag.contains("boundUUID")) {
+                instance.setUUID(tag.getUniqueId("boundUUID"));
+            } if (tag.contains("boundName")) {
+                instance.setName(tag.getString("boundName"));
+            } if (tag.contains("isBound")) {
+                instance.setBound(tag.getBoolean("isBound"));
             }
         }
     }

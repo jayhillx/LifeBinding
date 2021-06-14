@@ -8,9 +8,13 @@ public interface IBoundCapability {
 
     void setBound(boolean bound);
 
-    void setUUID(UUID var1);
+    void setUUID(UUID uuid);
+
+    void setName(String name);
 
     UUID getUUID();
+
+    String getName();
 
     void copyForRespawn(IBoundCapability var1);
 
