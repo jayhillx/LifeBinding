@@ -21,7 +21,7 @@ public class DamagingEffect extends Effect {
         PlayerEntity player = (PlayerEntity)entityLivingBaseIn;
         if (this == LifeBindingPotion.LIFE_DAMAGING_EFFECT.get()) {
 
-            entityLivingBaseIn.attackEntityFrom(ModDamageSource.LIFE_BINDING.causeBoundPlayer(player).setDamageBypassesArmor().setDamageAllowedInCreativeMode().setDamageIsAbsolute(), 1.5F);
+            entityLivingBaseIn.attackEntityFrom(ModDamageSource.causeBoundPlayer(player).setDamageBypassesArmor().setDamageIsAbsolute(), 1.0F);
         }
     }
 
@@ -33,8 +33,7 @@ public class DamagingEffect extends Effect {
             } else {
                 return true;
             }
-        }
-        return true;
+        } return true;
     }
 
 }
