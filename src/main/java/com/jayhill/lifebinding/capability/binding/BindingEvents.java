@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,26 +34,45 @@ public class BindingEvents {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity)entity;
             for (ServerPlayerEntity serverPlayerEntity : player.getServer().getPlayerList().getPlayers()) {
+
                 IBoundCapability bound = player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
 
                 /** Checks if the source is from our damaging effect. */
-                if (event.getSource() == ModDamageSource.causeBoundPlayer(player)) {
-                    BoundPlayersList.removeUsername(bound.getUUID());
+                if (event.getSource().equals(ModDamageSource.causeBoundPlayer(player))) {
                     serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
+                    BoundPlayersList.removeUsername(bound.getUUID());
                 }
 
-                if (player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null).isBound()) {
-
-                    /** Checks if the bound player is offline.
-                     * If so, adds their name to the death list. */
-                    if (player.getServer().getPlayerList().getPlayerByUUID(bound.getUUID()) == null) {
-                        BoundPlayersList.setUsername(bound.getUUID(), bound.getName());
-                    } else if (!player.world.isRemote) {
-                        /** If the player is online, remove their name and give them the effect. */
-                        player.getServer().getPlayerList().getPlayerByUUID(bound.getUUID()).addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 200));
-                        BoundPlayersList.removeUsername(bound.getUUID());
-                    }
+                /** Checks if the bound player is offline.
+                 * If so, adds their name to the death list. */
+                if (player.getServer().getPlayerList().getPlayerByUUID(bound.getUUID()) == null) {
+                    BoundPlayersList.setUsername(bound.getUUID(), bound.getName());
+                } else if (!player.world.isRemote) {
+                    /** If the player is online, remove their name and give them the effect. */
+                    player.getServer().getPlayerList().getPlayerByUUID(bound.getUUID()).addPotionEffect(new EffectInstance(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get(), 250));
+                    BoundPlayersList.removeUsername(bound.getUUID());
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPotionExpire(PotionEvent.PotionExpiryEvent event) {
+        Entity entity = event.getEntity();
+
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity)entity;
+
+            if (event.getPotionEffect().getPotion() == LifeBindingPotion.LIFE_DAMAGING_EFFECT.get()) {
+                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
+
+                IBoundCapability bound = player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
+
+                /** Drains the rest of the players health when the potion expires. */
+                player.attackEntityFrom(ModDamageSource.causeBoundPlayer(player), player.getHealth());
+
+                serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
+                BoundPlayersList.removeUsername(bound.getUUID());
             }
         }
     }
