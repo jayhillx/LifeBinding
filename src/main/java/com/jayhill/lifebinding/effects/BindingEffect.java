@@ -40,8 +40,6 @@ public class BindingEffect extends Effect {
                             /** Checks if the potion on both players is active. */
                             if (player1.isPotionActive(bindingEffect) && player2.isPotionActive(bindingEffect)) {
 
-
-
                                 player1.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null).setBound(true);
                                 player2.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null).setBound(true);
 
