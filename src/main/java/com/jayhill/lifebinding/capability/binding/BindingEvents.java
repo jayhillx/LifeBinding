@@ -38,7 +38,7 @@ public class BindingEvents {
                 IBoundCapability bound = player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
 
                 /** Checks if the source is from our damaging effect. */
-                if (event.getSource().equals(ModDamageSource.causeBoundPlayer(player))) {
+                if (event.getSource() instanceof ModDamageSource) {
                     serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
                     BoundPlayersList.removeUsername(bound.getUUID());
                 }
@@ -69,7 +69,7 @@ public class BindingEvents {
                 IBoundCapability bound = player.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
 
                 /** Drains the rest of the players health when the potion expires. */
-                player.attackEntityFrom(ModDamageSource.causeBoundPlayer(player), player.getHealth());
+                player.attackEntityFrom(ModDamageSource.causeBoundPlayer(player).setDamageBypassesArmor().setDamageIsAbsolute(), player.getHealth());
 
                 serverPlayerEntity.removePotionEffect(LifeBindingPotion.LIFE_DAMAGING_EFFECT.get());
                 BoundPlayersList.removeUsername(bound.getUUID());
