@@ -8,7 +8,5 @@
   "effect.lifebinding.life_binding": "Life Binding",
   "effect.lifebinding.life_damaging": "Life Damaging",
 
-  "death.attack.lifeBinding": "%1$s was doomed to death reaping bound to %2$s",
-
-  "death.attack.lifeBinding.player": "%1$s was doomed to death reaping bound to %2$s"
+  "death.attack.lifeBinding.boundPlayer": "%1$s was doomed to death reaping bound to %2$s"
 }
