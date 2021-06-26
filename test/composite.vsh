@@ -1,6 +1,6 @@
 #version 120
 
-varying vec4 texcoord;
+varying vec2 texcoord;
 
 uniform vec3 sunPosition;
 uniform vec3 moonPosition;
@@ -30,13 +30,13 @@ varying vec3 ambfill_color;
 varying vec3 ambient_color;
 varying vec3 skycolor;
 
-float rainx = clamp(rainStrength, 0.0f, 1.0f);
+float rainx = clamp(rainStrength, 0.0f, 0.2f);
 float wetx  = clamp(wetness, 0.0f, 1.0f);
 
 void main() {
 	gl_Position = ftransform();
 	
-	texcoord = gl_MultiTexCoord0;
+	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 
 	if (worldTime < 12700 || worldTime > 23250) {
 		lightVector = normalize(sunPosition);

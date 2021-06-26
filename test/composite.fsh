@@ -22,6 +22,8 @@
 /* SHADOWRES:1024 */
 /* SHADOWHPL:75.0 */
 
+
+  #define NightVision
   #define SSAO
   #define SSAO_LUMINANCE 0.0				// At what luminance will SSAO's shadows become highlights.
   #define SSAO_STRENGTH 1.75               // Too much strength causes white highlights on extruding edges and behind objects
@@ -83,6 +85,7 @@ uniform float viewHeight;
 uniform float rainStrength;
 uniform float wetness;
 uniform float aspectRatio;
+uniform float nightVision;
 
 
 //Calculate Time of Day
@@ -604,9 +607,13 @@ vec3 torchcolor = vec3(1.0,0.675,0.415);
 vec3 Specular_lightmap = clamp(spec * sunlight_color * shading * (1.0-rainx) + sky_spec*pow(sky_lightmap,4.0)*skycolor,0.0,1.1);
 	 Specular_lightmap *= sky_lightmap;
 
-vec3 Sunlight_lightmap = sunlight_color*shading*sky_lightmap*SUNLIGHTAMOUNT + ambient_color*(1.0-shading)*(1.0-SHADOW_DARKNESS)*sky_lightmap;
 	 
-	 
+#ifdef NightVision	 
+vec3 Sunlight_lightmap = (sunlight_color*shading*sky_lightmap*SUNLIGHTAMOUNT + ambient_color*(1.0-shading)*(1.0-SHADOW_DARKNESS)*sky_lightmap) * 1 + nightVision / 1.7;
+#else
+vec3 Sunlight_lightmap = (sunlight_color*shading*sky_lightmap*SUNLIGHTAMOUNT + ambient_color*(1.0-shading)*(1.0-SHADOW_DARKNESS)*sky_lightmap);
+#endif
+ 
 	 
 vec3 Torchlight_lightmap = torch_lightmap *  torchcolor;
 
@@ -643,8 +650,7 @@ color_sunlight *= mix(1.0,0.6,TimeMidnight);
 
 
 //Add all light elements together
-color = color_sunlight + color_torchlight + Specular_lightmap ;
-
+color = color_sunlight + color_torchlight + Specular_lightmap;
 }
 else color.rgb *= 0.75;
 
