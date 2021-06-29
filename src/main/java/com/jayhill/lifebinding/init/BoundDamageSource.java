@@ -3,28 +3,33 @@ package com.jayhill.lifebinding.init;
 import com.jayhill.lifebinding.capability.binding.BindingCapabilities;
 import com.jayhill.lifebinding.capability.binding.IBoundCapability;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-@SuppressWarnings("all")
-public class BoundDamageSource extends DamageSource {
-    protected final PlayerEntity damageSourcePlayerIn;
+import javax.annotation.Nonnull;
 
-    public BoundDamageSource(String damageTypeIn, PlayerEntity damageSourcePlayerIn) {
+public class BoundDamageSource extends DamageSource {
+    protected final LivingEntity damageSourceIn;
+
+    public BoundDamageSource(String damageTypeIn, LivingEntity damageSourceIn) {
         super(damageTypeIn);
-        this.damageSourcePlayerIn = damageSourcePlayerIn;
+        this.damageSourceIn = damageSourceIn;
     }
 
-    public ITextComponent getDeathMessage(LivingEntity playerEntityIn) {
-        PlayerEntity playerEntity = (PlayerEntity)playerEntityIn;
+    /** Sets cause from the bound player. */
+    public static DamageSource causeBoundPlayer(LivingEntity entity) {
+        return new BoundDamageSource("lifeBinding", entity);
+    }
+
+    @Nonnull
+    public ITextComponent getDeathMessage(LivingEntity entity) {
         String s = "death.attack." + this.damageType;
         String s1 = s + ".boundPlayer";
 
-        IBoundCapability bound = playerEntity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
+        IBoundCapability bound = entity.getCapability(BindingCapabilities.LIFE_BOUND_CAPABILITY).orElse(null);
 
-        return playerEntity != null ? new TranslationTextComponent(s1, playerEntityIn.getDisplayName(), bound.getName()) : new TranslationTextComponent(s, playerEntityIn.getDisplayName());
+        return new TranslationTextComponent(s1, entity.getDisplayName(), bound.getName());
     }
 
 }
