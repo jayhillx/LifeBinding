@@ -1,0 +1,9 @@
+
+test/final.fsh
+*.vsh
+*.vsh
+*.fsh
+test/gbuffers_hand.fsh
+test/gbuffers_hand.vsh
+test/gbuffers_water.fsh
+test/gbuffers_water.vsh
