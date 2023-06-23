@@ -1,12 +1,12 @@
 {
-  "itemGroup.lifeBinding": "Life Binding",
   "item.minecraft.potion.effect.life_binding": "Potion of Life Binding",
   "item.minecraft.splash_potion.effect.life_binding": "Splash Potion of Life Binding",
   "item.minecraft.lingering_potion.effect.life_binding": "Lingering Potion of Life Binding",
   "item.minecraft.tipped_arrow.effect.life_binding": "Arrow of Life Binding",
 
   "effect.lifebinding.binding": "Life Binding",
-  "effect.lifebinding.doomed": "Life Doomed",
+  "effect.lifebinding.death": "Death",
 
-  "death.attack.lifeBinding.boundPlayer": "%1$s was doomed to death reaping bound to %2$s"
+  "death.attack.deathCurse": "%1$s was doomed to death",
+  "death.attack.deathCurse.player": "%1$s was doomed to death reaping bound to %2$s"
 }

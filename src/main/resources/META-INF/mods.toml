@@ -1,19 +1,23 @@
 modLoader="javafml"
 
-loaderVersion="[35,)"
+loaderVersion="[28,)"
 
-license="All rights reserved"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/life-binding"
+
+logoFile="life_binding.png"
 
 [[mods]]
 
 modId="lifebinding"
 
-version="1.16.4-1.0"
+version="1.14.4-1.1"
 
 displayName="Life Binding"
 
-authors="jayhill"
+authors="jay"
+
+credits="pau101, LDShadowLady"
 
 description='''
-Adds potion of Life Binding. Inspired by LDShadowLady
+Adds potion of Life Binding.
 '''
